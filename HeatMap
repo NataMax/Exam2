@@ -1,0 +1,44 @@
+#Libraries which we use for creating heat maps
+library(gplots)
+library(RColorBrewer)
+
+# First, we read csv file in R
+data <- read.csv(file="c:/Users/Natalia/Desktop/Exam2data.csv", header=TRUE, sep=",")
+
+# Second, we convert data frame into matrix data
+# asign the row names to an Rnames object 
+Rnames <- data[,1]
+# Now we convert data frame into matrix using data.matrix function 
+matrix <- data.matrix(data[,2:ncol(data)]) 
+# Then we rwturn rownames to our matrix data using rownames function
+rownames(matrix)<-Rnames 
+
+# Next step is creation of a color template with function colorRampPallete
+
+my_palette <- colorRampPalette(c("orange","green","blue"))(n=400)# 400 different shades of color
+
+png(
+"c:/Users/Natalia/Desktop/Exam2_heatmap.png",
+width=5*5,
+heigh=5*5,
+res=1200
+)
+
+heatmap.2(matrix , main="Example", notecol="black", margins=c(12,9), col=my_palette,
+dendograme = "row", Colv="NA",  cexRow=0.9, cexCol=0.9)
+dev.off() 
+
+# Heat map with clustering
+
+distance = dist(mat_data, method = "euclidian") # will find a distance between Euclidian variables
+cluster = hclust(distance, method = "ward")# will perform clustering, ward is standart method
+
+# create new heat map
+X11()
+heatmap.2(matrix, main="Example", Rowv = as.dendrogram(cluster),col=my_palette,margins=c(12,9),cexRow=0.9, cexCol=0.9)
+
+
+
+ 
+
+
